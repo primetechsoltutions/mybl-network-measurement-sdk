@@ -58,13 +58,14 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(project(mapOf("path" to ":network-sdk")))
+//    implementation(project(mapOf("path" to ":network-sdk")))
 //    implementation("com.ptsl:net-monitor:1.0.0")
-
+    implementation("com.github.primetechsoltutions:mybl-network-measurement-sdk:Test-1.0.0")
     implementation("com.google.dagger:hilt-android:2.48")
     implementation("androidx.hilt:hilt-work:1.1.0-alpha01")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     implementation ("com.google.android.gms:play-services-location:21.0.1")
+
 
 
 }

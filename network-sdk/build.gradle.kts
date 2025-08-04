@@ -65,26 +65,26 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.9")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.9")
 
-    implementation("com.google.dagger:hilt-android:2.48")
-    implementation("androidx.hilt:hilt-common:1.1.0")
-    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    api("com.google.dagger:hilt-android:2.48")
+    api("androidx.hilt:hilt-common:1.1.0")
+    api("androidx.work:work-runtime-ktx:2.8.1")
     kapt ("androidx.hilt:hilt-compiler:1.1.0")
-    implementation ("androidx.hilt:hilt-work:1.1.0-alpha01")
+    api ("androidx.hilt:hilt-work:1.1.0-alpha01")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
-    implementation("androidx.room:room-ktx:2.6.1")
+    api("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
 
-    implementation("app.netmonster:core:1.2.0")
-    implementation("com.google.android.gms:play-services-location:21.0.1")
-    implementation ("com.guolindev.permissionx:permissionx:1.8.1")
+    api("app.netmonster:core:1.2.0")
+    api("com.google.android.gms:play-services-location:21.0.1")
+    api ("com.guolindev.permissionx:permissionx:1.8.1")
 
 
-    implementation("com.squareup.okhttp3:okhttp:4.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    api("com.squareup.okhttp3:okhttp:4.9.0")
+    api("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    api("com.squareup.retrofit2:retrofit:2.9.0")
+    api("com.squareup.retrofit2:converter-gson:2.9.0")
 }
 
 kapt {
@@ -154,8 +154,8 @@ publishing {
 
     repositories {
         mavenLocal()
-//        maven {
-//            url = uri("$buildDir/outputs/aar") // Use a separate directory for the Maven repository
-//        }
+        maven {
+            url = uri("$buildDir/outputs/aar") // Use a separate directory for the Maven repository
+        }
     }
 }

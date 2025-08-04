@@ -33,5 +33,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "NetworkSdk_Event"
-include(":app")
+//include(":app")
 include(":network-sdk")

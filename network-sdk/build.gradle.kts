@@ -153,8 +153,9 @@ publishing {
     }
 
     repositories {
-        maven {
-            url = uri("$buildDir/outputs/aar") // Use a separate directory for the Maven repository
-        }
+        mavenLocal()
+//        maven {
+//            url = uri("$buildDir/outputs/aar") // Use a separate directory for the Maven repository
+//        }
     }
 }

@@ -105,10 +105,11 @@ publishing {
             version = "1.0.0"
 
             // Include sources
-//            artifact(tasks["sourceJar"])
+            artifact(tasks["sourceJar"])
 
             // Define the artifact (.aar file)
-//            artifact("$buildDir/outputs/aar/${project.name}-release.aar") // Use release here
+            artifact("$buildDir/outputs/aar/${project.name}-release.aar") // Use release here
+
             pom.withXml {
                 asNode().appendNode("dependencies").apply {
                     configurations["implementation"].allDependencies.forEach { dep ->
@@ -152,9 +153,8 @@ publishing {
     }
 
     repositories {
-        mavenLocal()
-//        maven {
-//            url = uri("$buildDir/outputs/aar") // Use a separate directory for the Maven repository
-//        }
+        maven {
+            url = uri("$buildDir/outputs/aar") // Use a separate directory for the Maven repository
+        }
     }
 }

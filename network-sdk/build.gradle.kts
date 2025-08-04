@@ -268,47 +268,13 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
 
-                groupId = "com.github.primetechsoltutions"
-                artifactId = "mybl-network-measurement-sdk"
-                version = "1.0.0"
+                groupId = "com.github.primetechsoltutions" // GitHub user/org name
+                artifactId = "mybl-network-measurement-sdk" // repo name
+                version = "1.0.0" // tag name
 
-                pom {
-                    name.set("MyBL Network Measurement SDK")
-                    description.set("Network measurement and data uploader SDK.")
-                    url.set("https://github.com/primetechsoltutions/mybl-network-measurement-sdk")
-                    licenses {
-                        license {
-                            name.set("MIT License")
-                            url.set("https://opensource.org/licenses/MIT")
-                        }
-                    }
-                    developers {
-                        developer {
-                            id.set("primetechsoltutions")
-                            name.set("PrimeTech Solutions")
-                            email.set("you@example.com") // optional
-                        }
-                    }
-                    scm {
-                        connection.set("scm:git:git://github.com/primetechsoltutions/mybl-network-measurement-sdk.git")
-                        developerConnection.set("scm:git:ssh://git@github.com:primetechsoltutions/mybl-network-measurement-sdk.git")
-                        url.set("https://github.com/primetechsoltutions/mybl-network-measurement-sdk")
-                    }
-
-                    withXml {
-                        val dependenciesNode = asNode().appendNode("dependencies")
-                        configurations.implementation.get().dependencies.forEach {
-                            if (it.group != null && it.name != null) {
-                                val depNode = dependenciesNode.appendNode("dependency")
-                                depNode.appendNode("groupId", it.group)
-                                depNode.appendNode("artifactId", it.name)
-                                depNode.appendNode("version", it.version ?: "unspecified")
-                                depNode.appendNode("scope", "compile")
-                            }
-                        }
-                    }
-                }
+                // No need for custom POM setup — JitPack handles this.
             }
         }
     }
 }
+

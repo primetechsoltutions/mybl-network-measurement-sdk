@@ -17,10 +17,10 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url = uri("https://jitpack.io")
-            credentials {
-                username ="primetechsoltutions"
-                password = "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"
-            }
+//            credentials {
+//                username ="primetechsoltutions"
+//                password = "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"
+//            }
         }
 
 //        maven {
@@ -33,5 +33,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "NetworkSdk_Event"
-//include(":app")
+include(":app")
 include(":network-sdk")

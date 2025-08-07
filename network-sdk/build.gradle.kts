@@ -236,7 +236,7 @@ dependencies {
     // Hilt and WorkManager
     implementation("com.google.dagger:hilt-android:2.48")
     implementation("androidx.hilt:hilt-common:1.1.0")
-    api(libs.androidx.hilt.work)
+    api("androidx.hilt:hilt-work:1.1.0-alpha01")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     kapt("androidx.hilt:hilt-compiler:1.1.0")
 

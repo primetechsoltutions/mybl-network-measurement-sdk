@@ -270,7 +270,7 @@ afterEvaluate {
 
                 groupId = "com.github.primetechsoltutions" // GitHub user/org name
                 artifactId = "mybl-network-measurement-sdk" // repo name
-                version = "1.0.2" // tag name
+                version = "1.0.3" // tag name
 
                 // No need for custom POM setup — JitPack handles this.
             }

@@ -246,7 +246,10 @@
 #-dontwarn org.openjsse.**
 
 
-
+# --------- Preserve SDK Namespace ---------
+# Ensure classes remain in com.ptsl.network_sdk.* namespace
+-keeppackagenames com.ptsl.network_sdk.**
+-repackageclasses 'com.ptsl.network_sdk'
 # --------- General SDK Protection ---------
 -keep class com.ptsl.network_sdk.** { *; }
 -dontwarn com.ptsl.network_sdk.**

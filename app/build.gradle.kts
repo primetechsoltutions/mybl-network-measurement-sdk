@@ -28,6 +28,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
         debug {
             isMinifyEnabled = false
@@ -63,10 +64,10 @@ dependencies {
 //    implementation("com.github.primetechsoltutions:mybl-network-measurement-sdk:1.0.0")
 
 
-    implementation("com.google.dagger:hilt-android:2.48")
+    implementation("com.google.dagger:hilt-android:2.57")
     implementation("androidx.hilt:hilt-work:1.1.0-alpha01")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
-    implementation ("com.google.android.gms:play-services-location:21.0.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.57")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 
 
 

@@ -28,6 +28,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
         debug {
             isMinifyEnabled = false
@@ -58,9 +59,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-//    implementation(project(mapOf("path" to ":network-sdk")))
+    implementation(project(mapOf("path" to ":network-sdk")))
 //    implementation("com.ptsl:net-monitor:1.0.0")
-    implementation("com.github.primetechsoltutions:mybl-network-measurement-sdk:1.0.0")
+//    implementation("com.github.primetechsoltutions:mybl-network-measurement-sdk:1.0.0")
 
 
     implementation("com.google.dagger:hilt-android:2.48")

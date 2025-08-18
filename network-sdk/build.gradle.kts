@@ -234,43 +234,57 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.9")
 
     // Hilt and WorkManager
-    implementation("com.google.dagger:hilt-android:2.48")
+    implementation("com.google.dagger:hilt-android:2.57")
     implementation("androidx.hilt:hilt-common:1.1.0")
     api("androidx.hilt:hilt-work:1.1.0-alpha01")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.57")
     kapt("androidx.hilt:hilt-compiler:1.1.0")
 
     // WorkManager
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     // Room
-    implementation("androidx.room:room-ktx:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.7.2")
+    kapt("androidx.room:room-compiler:2.7.2")
 
     // Permissions and location
     implementation("com.guolindev.permissionx:permissionx:1.8.1")
-    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 
     // NetMonster
     implementation("app.netmonster:core:1.2.0")
 
     // Networking (Retrofit + OkHttp)
-    implementation("com.squareup.okhttp3:okhttp:4.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:5.1.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.1.0")
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 }
 
 // ✅ Maven publishing block with dependency injection into POM
 afterEvaluate {
+//    publishing {
+//        publications {
+//            create<MavenPublication>("release") {
+//                from(components["release"])
+//
+//                groupId = "com.github.primetechsoltutions" // GitHub user/org name
+//                artifactId = "mybl-network-measurement-sdk" // repo name
+//                version = "1.0.3" // tag name
+//
+//                // No need for custom POM setup — JitPack handles this.
+//            }
+//        }
+//    }
+
     publishing {
         publications {
-            create<MavenPublication>("release") {
-                from(components["release"])
+            create<MavenPublication>("debug") {
+                from(components["debug"])
 
                 groupId = "com.github.primetechsoltutions" // GitHub user/org name
                 artifactId = "mybl-network-measurement-sdk" // repo name
-                version = "1.0.3" // tag name
+                version = "1.0.4" // tag name
 
                 // No need for custom POM setup — JitPack handles this.
             }

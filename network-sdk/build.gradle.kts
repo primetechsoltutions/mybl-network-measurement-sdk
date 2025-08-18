@@ -196,10 +196,19 @@ android {
         buildConfigField("String", "SdkVersion", "\"$sdkVersion\"")
 
     }
+    publishing {
+        // expose both variants for publishing
+        singleVariant("release") {
+            withSourcesJar()
+        }
+        singleVariant("debug") {
+            withSourcesJar()
+        }
+    }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -261,34 +270,55 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 }
 
-// ✅ Maven publishing block with dependency injection into POM
+// Maven publishing configuration
 afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+                groupId = "com.github.primetechsoltutions"
+                artifactId = "mybl-network-measurement-sdk"
+                version = "1.0.4"
+            }
+
+            create<MavenPublication>("debug") {
+                from(components["debug"])
+                groupId = "com.github.primetechsoltutions"
+                artifactId = "mybl-network-measurement-sdk-debug"
+                version = "1.0.4"
+            }
+        }
+    }
+}
+
+//// ✅ Maven publishing block with dependency injection into POM
+//afterEvaluate {
+////    publishing {
+////        publications {
+////            create<MavenPublication>("release") {
+////                from(components["release"])
+////
+////                groupId = "com.github.primetechsoltutions" // GitHub user/org name
+////                artifactId = "mybl-network-measurement-sdk" // repo name
+////                version = "1.0.3" // tag name
+////
+////                // No need for custom POM setup — JitPack handles this.
+////            }
+////        }
+////    }
+//
 //    publishing {
 //        publications {
-//            create<MavenPublication>("release") {
-//                from(components["release"])
+//            create<MavenPublication>("debug") {
+//                from(components["debug"])
 //
 //                groupId = "com.github.primetechsoltutions" // GitHub user/org name
 //                artifactId = "mybl-network-measurement-sdk" // repo name
-//                version = "1.0.3" // tag name
+//                version = "1.0.4" // tag name
 //
 //                // No need for custom POM setup — JitPack handles this.
 //            }
 //        }
 //    }
-
-    publishing {
-        publications {
-            create<MavenPublication>("debug") {
-                from(components["debug"])
-
-                groupId = "com.github.primetechsoltutions" // GitHub user/org name
-                artifactId = "mybl-network-measurement-sdk" // repo name
-                version = "1.0.4" // tag name
-
-                // No need for custom POM setup — JitPack handles this.
-            }
-        }
-    }
-}
+//}
 

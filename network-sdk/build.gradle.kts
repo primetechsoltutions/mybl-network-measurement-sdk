@@ -245,7 +245,10 @@ dependencies {
     // Hilt and WorkManager
     implementation("com.google.dagger:hilt-android:2.57")
     implementation("androidx.hilt:hilt-common:1.1.0")
-    api("androidx.hilt:hilt-work:1.1.0")
+    api("androidx.hilt:hilt-work:1.1.0") {
+        exclude(group = "androidx.hilt", module = "hilt-navigation-compose")
+        exclude(group = "androidx.compose")
+    }
     kapt("com.google.dagger:hilt-android-compiler:2.57")
     kapt("androidx.hilt:hilt-compiler:1.1.0")
 
@@ -278,47 +281,15 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.primetechsoltutions"
                 artifactId = "mybl-network-measurement-sdk"
-                version = "1.0.6"
+                version = "1.0.7"
             }
 
             create<MavenPublication>("debug") {
                 from(components["debug"])
                 groupId = "com.github.primetechsoltutions"
                 artifactId = "mybl-network-measurement-sdk-debug"
-                version = "1.0.6"
+                version = "1.0.7"
             }
         }
     }
 }
-
-//// ✅ Maven publishing block with dependency injection into POM
-//afterEvaluate {
-////    publishing {
-////        publications {
-////            create<MavenPublication>("release") {
-////                from(components["release"])
-////
-////                groupId = "com.github.primetechsoltutions" // GitHub user/org name
-////                artifactId = "mybl-network-measurement-sdk" // repo name
-////                version = "1.0.3" // tag name
-////
-////                // No need for custom POM setup — JitPack handles this.
-////            }
-////        }
-////    }
-//
-//    publishing {
-//        publications {
-//            create<MavenPublication>("debug") {
-//                from(components["debug"])
-//
-//                groupId = "com.github.primetechsoltutions" // GitHub user/org name
-//                artifactId = "mybl-network-measurement-sdk" // repo name
-//                version = "1.0.4" // tag name
-//
-//                // No need for custom POM setup — JitPack handles this.
-//            }
-//        }
-//    }
-//}
-

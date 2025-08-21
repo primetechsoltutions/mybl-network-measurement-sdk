@@ -281,14 +281,14 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.primetechsoltutions"
                 artifactId = "mybl-network-measurement-sdk"
-                version = "1.0.7"
+                version = "1.0.8"
             }
 
             create<MavenPublication>("debug") {
                 from(components["debug"])
                 groupId = "com.github.primetechsoltutions"
                 artifactId = "mybl-network-measurement-sdk-debug"
-                version = "1.0.7"
+                version = "1.0.8"
             }
         }
     }

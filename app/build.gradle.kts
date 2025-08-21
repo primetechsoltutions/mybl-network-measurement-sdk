@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.hilt.work)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -65,7 +66,6 @@ dependencies {
 
 
     implementation("com.google.dagger:hilt-android:2.57")
-    implementation("androidx.hilt:hilt-work:1.1.0-alpha01")
     kapt("com.google.dagger:hilt-android-compiler:2.57")
     implementation("com.google.android.gms:play-services-location:21.3.0")
 

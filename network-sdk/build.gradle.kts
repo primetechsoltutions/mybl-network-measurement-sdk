@@ -245,7 +245,7 @@ dependencies {
     // Hilt and WorkManager
     implementation("com.google.dagger:hilt-android:2.57")
     implementation("androidx.hilt:hilt-common:1.1.0")
-    api("androidx.hilt:hilt-work:1.1.0") {
+    implementation("androidx.hilt:hilt-work:1.1.0") {
         exclude(group = "androidx.hilt", module = "hilt-navigation-compose")
         exclude(group = "androidx.compose")
     }
@@ -260,7 +260,9 @@ dependencies {
     kapt("androidx.room:room-compiler:2.7.2")
 
     // Permissions and location
-    implementation("com.guolindev.permissionx:permissionx:1.8.1")
+    implementation("com.guolindev.permissionx:permissionx:1.8.1") {
+        exclude(group = "androidx.databinding", module = "viewbinding")
+    }
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
     // NetMonster
@@ -281,14 +283,14 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.primetechsoltutions"
                 artifactId = "mybl-network-measurement-sdk"
-                version = "1.0.8"
+                version = "1.0.9"
             }
 
             create<MavenPublication>("debug") {
                 from(components["debug"])
                 groupId = "com.github.primetechsoltutions"
                 artifactId = "mybl-network-measurement-sdk-debug"
-                version = "1.0.8"
+                version = "1.0.9"
             }
         }
     }

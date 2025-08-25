@@ -21,26 +21,16 @@ import com.ptsl.network_sdk.data_model.entity.AuthEntity
 import com.ptsl.network_sdk.data_model.entity.NetworkDataEntity
 import com.ptsl.network_sdk.db.NetworkDao
 import com.ptsl.network_sdk.dl_ul_test.DownloadUploadHelper
-import com.ptsl.network_sdk.utils.getWorkEndTime
-import com.ptsl.network_sdk.utils.getWorkStartTime
 import com.ptsl.network_sdk.utils.prepareDate
-import com.ptsl.rso.network_service.data_model.logger.EventLogModel
-import com.ptsl.rso.network_service.data_model.logger.LogDataWrapper
-import cz.mroczis.netmonster.core.BuildConfig
+import com.ptsl.network_sdk.data_model.logger.EventLogModel
+import com.ptsl.network_sdk.data_model.logger.LogDataWrapper
 import cz.mroczis.netmonster.core.factory.NetMonsterFactory
 import cz.mroczis.netmonster.core.model.connection.PrimaryConnection
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import dagger.hilt.EntryPoint
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.HttpException
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
-import javax.inject.Inject
 
 @HiltWorker
 class NetworkDataWorker @AssistedInject constructor(

@@ -2,9 +2,7 @@ package com.ptsl.network_sdk.api
 
 import com.ptsl.network_sdk.data_model.BaseResponse
 import com.ptsl.network_sdk.data_model.NetworkDataRequest
-import com.ptsl.network_sdk.data_model.entity.AuthEntity
-import com.ptsl.network_sdk.data_model.entity.WorkEntity
-import com.ptsl.rso.network_service.data_model.logger.LogDataWrapper
+import com.ptsl.network_sdk.data_model.logger.LogDataWrapper
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response

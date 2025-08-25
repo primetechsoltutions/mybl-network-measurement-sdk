@@ -1,4 +1,4 @@
-package com.ptsl.rso.network_service.data_model.logger
+package com.ptsl.network_sdk.data_model.logger
 
 import android.os.Parcelable
 import androidx.annotation.Keep

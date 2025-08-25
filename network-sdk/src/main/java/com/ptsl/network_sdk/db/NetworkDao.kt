@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.ptsl.network_sdk.data_model.entity.AuthEntity
 import com.ptsl.network_sdk.data_model.entity.NetworkDataEntity
 import com.ptsl.network_sdk.data_model.entity.WorkEntity
-import com.ptsl.rso.network_service.data_model.logger.EventLogModel
+import com.ptsl.network_sdk.data_model.logger.EventLogModel
 
 
 @Dao

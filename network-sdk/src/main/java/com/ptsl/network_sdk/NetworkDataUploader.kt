@@ -2,25 +2,19 @@ package com.ptsl.network_sdk
 
 
 import android.content.Context
-import android.os.Build
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.ptsl.network_sdk.api.ApiService
 import com.ptsl.network_sdk.data_model.entity.AuthEntity
 import com.ptsl.network_sdk.db.NetworkDao
 import com.ptsl.network_sdk.utils.CheckPermissionHandler
-import com.ptsl.rso.network_service.data_model.logger.EventLogModel
-import com.ptsl.rso.network_service.data_model.logger.LogDataWrapper
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 

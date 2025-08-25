@@ -11,9 +11,8 @@ class HiltApp : Application(), WorkConfiguration.Provider {
 
     @Inject lateinit var workerFactory: HiltWorkerFactory
 
-    override fun getWorkManagerConfiguration() =
-        WorkConfiguration.Builder()
-            .setWorkerFactory(workerFactory)
-            .build()
+    override val workManagerConfiguration: WorkConfiguration
+        get() = WorkConfiguration.Builder()
+            .setWorkerFactory(workerFactory).build()
 }
 

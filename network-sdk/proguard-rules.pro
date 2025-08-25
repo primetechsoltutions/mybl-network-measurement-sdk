@@ -174,3 +174,26 @@
 
 -dontwarn java.lang.invoke.StringConcatFactory
 -keep class java.lang.invoke.StringConcatFactory { *; }
+
+
+
+# --------- Hilt / Dagger ---------
+-keep class dagger.** { *; }
+-dontwarn dagger.**
+-keep class javax.inject.** { *; }
+-dontwarn javax.inject.**
+-keep class dagger.hilt.** { *; }
+-dontwarn dagger.hilt.**
+-keep class androidx.hilt.** { *; }
+
+# --------- WorkManager ---------
+-keep class androidx.work.** { *; }
+-dontwarn androidx.work.**
+
+# --------- Room ---------
+-keepclassmembers class * {
+    @androidx.room.* <methods>;
+}
+-keep class androidx.room.** { *; }
+-dontwarn androidx.room.**
+

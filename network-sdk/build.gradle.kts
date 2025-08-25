@@ -76,10 +76,7 @@
 //    kapt("com.google.dagger:hilt-android-compiler:2.57.1")
 //    implementation("androidx.hilt:hilt-common:1.2.0")
 //    ksp("androidx.hilt:hilt-compiler:1.2.0")
-//    implementation("androidx.hilt:hilt-work:1.2.0") {
-//        exclude(group = "androidx.hilt", module = "hilt-navigation-compose")
-//        exclude(group = "androidx.compose")
-//    }
+//    implementation("androidx.hilt:hilt-work:1.2.0")
 //
 //    // WorkManager
 //    implementation("androidx.work:work-runtime-ktx:2.10.2")
@@ -121,7 +118,7 @@
 //        create<MavenPublication>("release") {
 //            groupId = "com.ptsl"
 //            artifactId = "net-monitor"
-//            version = "1.0.12"
+//            version = "1.0.19"
 //
 //            // Include sources
 //            artifact(tasks["sourceJar"])
@@ -183,6 +180,8 @@
 //------------------------------
 //
 //
+
+// TODO:  For JitPack
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -270,10 +269,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.57.1")
     implementation("androidx.hilt:hilt-common:1.2.0")
     ksp("androidx.hilt:hilt-compiler:1.2.0")
-    implementation("androidx.hilt:hilt-work:1.2.0") {
-        exclude(group = "androidx.hilt", module = "hilt-navigation-compose")
-        exclude(group = "androidx.compose")
-    }
+    implementation("androidx.hilt:hilt-work:1.2.0")
 
     // WorkManager
     implementation("androidx.work:work-runtime-ktx:2.10.2")
@@ -309,14 +305,14 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.primetechsoltutions"
                 artifactId = "mybl-network-measurement-sdk"
-                version = "1.0.14"
+                version = "1.0.20"
             }
 
             create<MavenPublication>("debug") {
                 from(components["debug"])
                 groupId = "com.github.primetechsoltutions"
                 artifactId = "mybl-network-measurement-sdk-debug"
-                version = "1.0.14"
+                version = "1.0.20"
             }
         }
     }

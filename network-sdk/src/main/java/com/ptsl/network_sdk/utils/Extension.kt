@@ -101,7 +101,8 @@ suspend fun ICell.prepareDate(
     locationPair: Pair<Double, Double>,
     downloader: DownloadUploadHelper,
     hasMobileInternet: Boolean=false,
-    activeNetworkMnc : String = "-1"
+    activeNetworkMnc : String = "-1",
+    usedSimSlot: Int = 0
 ): NetworkDataEntity {
     val mcc = this.network?.mcc
     val mnc = this.network?.mnc
@@ -128,7 +129,7 @@ suspend fun ICell.prepareDate(
                 it.isUserDeviceOnCall = false
                 it.deviceManufacture ="${Build.MANUFACTURER}"
                 it.deviceOsVersion ="${Build.VERSION.SDK_INT}"
-                it.usedSimSlot= 1
+                it.usedSimSlot= usedSimSlot
                 it.rtt = 0.0
                 it.latency =0.0
             }
@@ -161,7 +162,7 @@ suspend fun ICell.prepareDate(
                 it.isUserDeviceOnCall = false
                 it.deviceManufacture ="${Build.MANUFACTURER}"
                 it.deviceOsVersion ="${Build.VERSION.SDK_INT}"
-                it.usedSimSlot= 1
+                it.usedSimSlot= usedSimSlot
                 it.rtt = 0.0
                 it.latency =0.0
             }
@@ -193,7 +194,7 @@ suspend fun ICell.prepareDate(
                 it.isUserDeviceOnCall = false
                 it.deviceManufacture ="${Build.MANUFACTURER}"
                 it.deviceOsVersion ="${Build.VERSION.SDK_INT}"
-                it.usedSimSlot= 1
+                it.usedSimSlot= usedSimSlot
                 it.rtt = 0.0
                 it.latency =0.0
             }
@@ -230,7 +231,7 @@ suspend fun ICell.prepareDate(
                 it.isUserDeviceOnCall = false
                 it.deviceManufacture ="${Build.MANUFACTURER}"
                 it.deviceOsVersion ="${Build.VERSION.SDK_INT}"
-                it.usedSimSlot= 1
+                it.usedSimSlot= usedSimSlot
                 it.rtt = 0.0
                 it.latency =0.0
             }
@@ -260,7 +261,7 @@ suspend fun ICell.prepareDate(
                 it.isUserDeviceOnCall = false
                 it.deviceManufacture ="${Build.MANUFACTURER}"
                 it.deviceOsVersion ="${Build.VERSION.SDK_INT}"
-                it.usedSimSlot= 1
+                it.usedSimSlot= usedSimSlot
                 it.rtt = 0.0
                 it.latency =0.0
             }
@@ -288,7 +289,7 @@ suspend fun ICell.prepareDate(
                 it.isUserDeviceOnCall = false
                 it.deviceManufacture ="${Build.MANUFACTURER}"
                 it.deviceOsVersion ="${Build.VERSION.SDK_INT}"
-                it.usedSimSlot= 1
+                it.usedSimSlot= usedSimSlot
                 it.rtt = 0.0
                 it.latency =0.0
             }

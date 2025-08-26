@@ -19,11 +19,11 @@ import com.ptsl.network_sdk.api.ApiService
 import com.ptsl.network_sdk.data_model.NetworkDataRequest
 import com.ptsl.network_sdk.data_model.entity.AuthEntity
 import com.ptsl.network_sdk.data_model.entity.NetworkDataEntity
+import com.ptsl.network_sdk.data_model.logger.EventLogModel
+import com.ptsl.network_sdk.data_model.logger.LogDataWrapper
 import com.ptsl.network_sdk.db.NetworkDao
 import com.ptsl.network_sdk.dl_ul_test.DownloadUploadHelper
 import com.ptsl.network_sdk.utils.prepareDate
-import com.ptsl.network_sdk.data_model.logger.EventLogModel
-import com.ptsl.network_sdk.data_model.logger.LogDataWrapper
 import cz.mroczis.netmonster.core.factory.NetMonsterFactory
 import cz.mroczis.netmonster.core.model.connection.PrimaryConnection
 import dagger.assisted.Assisted
@@ -45,47 +45,49 @@ class NetworkDataWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         Log.d("worker", "-------> \n Started \n <-------")
-        var statusCode: Int=0
-        var errorMessage: String=""
         return try {
             val locationPair = getCurrentLocation()
             val auth = getAuth()
             val dataList = getReqData(locationPair)
-            if(dataList.isEmpty()){
-                errorMessage="Net Monster Initialization Failed"
-            }
             val response = apiService.postNetworkData(NetworkDataRequest(auth, dataList))
             Log.d("response", "✅ API success: $response")
             clearNetworkDataCache()
-            if(databaseDao.getNetworkDataLogEventCount()>0){
-                apiService.postRetailerNetworkDataLogs(LogDataWrapper(auth,databaseDao.getNetworkDataLogEvent()))
+            if (databaseDao.getNetworkDataLogEventCount() > 0) {
+                apiService.postRetailerNetworkDataLogs(
+                    LogDataWrapper(
+                        auth,
+                        databaseDao.getNetworkDataLogEvent()
+                    )
+                )
                 clearNetworkDataCacheLog()
             }
             Result.success()
-        } catch (e: Exception)
-        {
-
+        } catch (e: Exception) {
+            var statusCode: Int = 0
+            var errorMessage: String = ""
             when (e) {
                 is HttpException -> {
                     // Handle HTTP errors (4xx, 5xx)
                     statusCode = e.code()
                     errorMessage = "HTTP error: ${e.message}"
                 }
+
                 is IOException -> {
                     // Handle network errors
                     errorMessage = "Network error: ${e.message}"
                 }
+
                 else -> {
                     // Handle other exceptions
                     errorMessage = "Unexpected error: ${e.message}"
                 }
             }
 
-            Log.e("worker", "❌ Error: ${e.localizedMessage}", e)
+            Log.e("doWork", "❌ Error: ${e.localizedMessage}", e)
             insertNetworkDataInDb()
             val auth = getAuth()
-            val eventLogModel=EventLogModel(
-                logSource = "mobile_app",
+            val eventLogModel = EventLogModel(
+                logSource = "mobile_app${auth.integratedAppEventName}",
                 eventType = "error",
                 title = "Network Request Failed",
                 description = "Failed to post network data",
@@ -98,25 +100,6 @@ class NetworkDataWorker @AssistedInject constructor(
             )
             preparedLogEventData(auth, eventLogModel)
             Result.failure()
-        }
-        finally {
-            if(errorMessage.isNotEmpty()){
-                val auth = getAuth()
-                val eventLogModel=EventLogModel(
-                    logSource = "mobile_app",
-                    eventType = "error",
-                    title = "Network Request Failed",
-                    description = "Failed to post network data",
-                    statusCode = statusCode,
-                    status = if (statusCode in 400..599) "HTTP Error" else "System Error",
-                    message = errorMessage,
-                    stackTrace = "",
-                    os = Build.VERSION.SDK_INT.toString(),
-                    deviceModel = "${Build.MANUFACTURER} ${Build.MODEL}"
-                )
-                preparedLogEventData(auth, eventLogModel)
-            }
-
         }
     }
 
@@ -154,13 +137,42 @@ class NetworkDataWorker @AssistedInject constructor(
         val activeNetworkMnc = if (isMobileNetworkConnected) getActiveNetworkMNC() else "-1"
         val dataList = arrayListOf<NetworkDataEntity>()
 
+        var securityException: SecurityException? = null
+
+
         NetMonsterFactory.get(applicationContext).apply {
             val cells = try {
                 getCells()
             } catch (e: SecurityException) {
                 Log.w("NetworkDataWorker", "Permission denied for getCells", e)
+                securityException = e
+                null
+            }
+
+            if (cells == null) {
+                val auth = getAuth()
+                val eventLogModel = EventLogModel(
+                    logSource = "mobile_app${auth.integratedAppEventName}",
+                    eventType = "error",
+                    title = "Get Network Request Failed",
+                    description = "Failed to get network data due to missing permissions",
+                    statusCode = 902,
+                    status = "NetMonster Permission Denied",
+                    message = """
+                    Unable to process network data.
+                    isMobileNetworkConnected: $isMobileNetworkConnected
+                    activeNetworkMnc: $activeNetworkMnc
+                    Error: ${securityException?.message ?: "N/A"}
+                """.trimIndent(),
+                    stackTrace = securityException?.stackTraceToString()
+                        ?: "No stack trace available",
+                    os = Build.VERSION.SDK_INT.toString(),
+                    deviceModel = "${Build.MANUFACTURER} ${Build.MODEL}"
+                )
+                preparedLogEventData(auth, eventLogModel)
                 return dataList
             }
+
 
             cells.find {
                 it.network?.mcc == "470"
@@ -171,7 +183,8 @@ class NetworkDataWorker @AssistedInject constructor(
                             locationPair,
                             downloader,
                             isMobileNetworkConnected,
-                            activeNetworkMnc
+                            activeNetworkMnc,
+                            getSimCount()
                         )
                         dataList.add(data)
                     }
@@ -182,20 +195,36 @@ class NetworkDataWorker @AssistedInject constructor(
         return dataList
     }
 
-    private fun isMobileNetworkConnected(context: Context): Boolean {
+    private suspend fun isMobileNetworkConnected(context: Context): Boolean {
         return try {
+
             val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val network = cm.activeNetwork ?: return false
             val caps = cm.getNetworkCapabilities(network) ?: return false
             caps.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
         } catch (e: Exception) {
+            val auth = getAuth()
+            val eventLogModel = EventLogModel(
+                logSource = "mobile_app${auth.integratedAppEventName}",
+                eventType = "error",
+                title = "Check Mobile Network Request Failed",
+                description = "Mobile network is not connected",
+                statusCode = 901,
+                status = "Mobile Network Not Connected",
+                message = "Mobile Network is not connected",
+                stackTrace = e.stackTraceToString(),
+                os = Build.VERSION.SDK_INT.toString(),
+                deviceModel = "${Build.MANUFACTURER} ${Build.MODEL}"
+            )
+            preparedLogEventData(auth, eventLogModel)
             false
         }
     }
 
-    private fun getActiveNetworkMNC(): String {
+    private suspend fun getActiveNetworkMNC(): String {
         var id = "-1"
         try {
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 val subscriptionManager = SubscriptionManager.from(applicationContext)
                 val nDataSubscriptionId = getDefaultDataSubscriptionId(subscriptionManager)
@@ -209,7 +238,21 @@ class NetworkDataWorker @AssistedInject constructor(
             Log.e("getActiveNetworkMNC", "Active MNC : $id")
 
 
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            val auth = getAuth()
+            val eventLogModel = EventLogModel(
+                logSource = "mobile_app${auth.integratedAppEventName}",
+                eventType = "error",
+                title = "Get Active Network MNC Failed",
+                description = "Failed To Get Active Network MNC",
+                statusCode = 903,
+                status = "MNC Not Found",
+                message = "Could not get active network mnc",
+                stackTrace = e.stackTraceToString(),
+                os = Build.VERSION.SDK_INT.toString(),
+                deviceModel = "${Build.MANUFACTURER} ${Build.MODEL}"
+            )
+            preparedLogEventData(auth, eventLogModel)
         }
 
         return "0${id}"
@@ -244,14 +287,15 @@ class NetworkDataWorker @AssistedInject constructor(
     }
 
 
-    private suspend fun preparedLogEventData(auth: AuthEntity, eventLogModel:EventLogModel){
-         try {
-             apiService.postRetailerNetworkDataLogs(LogDataWrapper(auth, arrayListOf(eventLogModel)))
+    private suspend fun preparedLogEventData(auth: AuthEntity, eventLogModel: EventLogModel) {
+        try {
+            apiService.postRetailerNetworkDataLogs(LogDataWrapper(auth, arrayListOf(eventLogModel)))
 
         } catch (e: Exception) {
             insertNetworkDataLogInDb(eventLogModel)
         }
     }
+
     private suspend fun insertNetworkDataInDb() {
         try {
             val reqData = getReqData(getCurrentLocation())
@@ -264,6 +308,7 @@ class NetworkDataWorker @AssistedInject constructor(
     private suspend fun clearNetworkDataCache() {
         databaseDao.deleteNetworkData()
     }
+
     private suspend fun clearNetworkDataCacheLog() {
         databaseDao.deleteNetworkDataLogEvent()
     }
@@ -276,4 +321,14 @@ class NetworkDataWorker @AssistedInject constructor(
         }
     }
 
+    private fun getSimCount(): Int {
+        return try {
+            val subscriptionManager = SubscriptionManager.from(applicationContext)
+            val activeSubscriptionInfoList = subscriptionManager.activeSubscriptionInfoList
+            activeSubscriptionInfoList?.size ?: 0
+        } catch (e: Exception) {
+            Log.e("getSimCount", "Error getting SIM count", e)
+            0
+            }
+    }
 }

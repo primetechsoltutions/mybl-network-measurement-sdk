@@ -163,7 +163,7 @@ class NetworkDataWorker @AssistedInject constructor(
             }
 
             cells.find {
-                it.network?.mcc == "470" && (it.network?.mnc == "03" || it.network?.mnc == "3")
+                it.network?.mcc == "470"
             }?.let {
                 cells.forEach {
                     if (it.connectionStatus is PrimaryConnection) {

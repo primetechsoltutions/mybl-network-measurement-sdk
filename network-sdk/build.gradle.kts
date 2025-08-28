@@ -216,13 +216,8 @@ android {
 
     }
     publishing {
-        // expose both variants for publishing
-        singleVariant("release") {
-            withSourcesJar()
-        }
-        singleVariant("debug") {
-            withSourcesJar()
-        }
+        singleVariant("release")
+        singleVariant("debug")
     }
 
     buildTypes {

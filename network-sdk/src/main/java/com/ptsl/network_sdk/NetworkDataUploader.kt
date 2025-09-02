@@ -41,33 +41,34 @@ class NetworkDataUploader @Inject constructor(
         userLongitude: Double = 0.0,
         callback: (Boolean) -> Unit
     ) {
-        if (this::checkPermissionHandler.isInitialized && checkPermissionHandler.isPermissionGranted()) {
+        if (this::checkPermissionHandler.isInitialized) {
             Log.d("userID", "--------> \n $msisdn \n <----------")
-            coroutineScope.launch {
-                val auth = AuthEntity(msisdn = msisdn,
-                    integratedAppVersion = integratedAppVersion,
-                    sdkInitiateTimeStamp = sdkInitiateTimeStamp,
-                    integratedAppEventName = integratedAppEventName,
-                    sdkVersion = BuildConfig.SdkVersion,
-                    userLatitude = userLatitude,
-                    userLongitude = userLongitude
+
+            checkPermissionHandler.requestPermission{
+                coroutineScope.launch {
+                    val isLocationEnabled = checkPermissionHandler.isLocationPermissionGranted()
+                    val isPhoneStateEnabled = checkPermissionHandler.isPhoneStatePermissionGranted()
+                    val auth = AuthEntity(msisdn = msisdn,
+                        integratedAppVersion = integratedAppVersion,
+                        sdkInitiateTimeStamp = sdkInitiateTimeStamp,
+                        integratedAppEventName = integratedAppEventName,
+                        sdkVersion = BuildConfig.SdkVersion,
+                        userLatitude = userLatitude,
+                        userLongitude = userLongitude,
+                        isSdkInitialized = this@NetworkDataUploader::checkPermissionHandler.isInitialized,
+                        isLocationEnabled = isLocationEnabled,
+                        isPhoneStateEnabled = isPhoneStateEnabled,
                     )
-                databaseDao.insertAuthData(auth)
-                enqueueNetworkDataWork()
-                callback(true)
+                    databaseDao.insertAuthData(auth)
+                    enqueueNetworkDataWork()
+                    callback(true)
+                }
             }
+
         } else {
             callback(false)
         }
     }
-
-    fun requestPermission(callback: (Boolean) -> Unit) {
-        if (checkPermissionHandler.isPermissionGranted())
-            callback(true)
-        else
-            checkPermissionHandler.requestPermission(callback = callback)
-    }
-
 
     private fun enqueueNetworkDataWork() {
         val constraints = Constraints.Builder()

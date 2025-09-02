@@ -21,5 +21,9 @@ data class AuthEntity(
     @SerializedName("integratedAppEventName") var integratedAppEventName: String = "Event",
     @SerializedName("sdkVersion") var sdkVersion: String = "",
     @SerializedName("userLatitude") var userLatitude: Double = 0.0,
-    @SerializedName("userLongitude") var userLongitude: Double = 0.0
+    @SerializedName("userLongitude") var userLongitude: Double = 0.0,
+    @SerializedName("isSdkInitialized") var isSdkInitialized: Boolean = false,
+    @SerializedName("isLocationEnabled") var isLocationEnabled: Boolean = false,
+    @SerializedName("isPhoneStateEnabled") var isPhoneStateEnabled: Boolean = false,
+
 ) : Parcelable

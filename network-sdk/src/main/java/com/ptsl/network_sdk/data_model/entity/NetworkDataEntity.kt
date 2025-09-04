@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@Entity(indices = [Index(value = ["time"], unique = true)])
+@Entity(indices = [Index(value = ["time", "mnc", "type", "cid","lac","arfcn","tac","rssi"], unique=true)])
 @Keep
 data class NetworkDataEntity(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,

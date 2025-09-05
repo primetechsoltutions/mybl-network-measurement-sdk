@@ -54,7 +54,6 @@ class NetworkDataWorker @AssistedInject constructor(
             val locationPair = getCurrentLocation()
             // 2. Network data
             dataList = getReqData(locationPair).toMutableList()
-
             // 3. Send network data
             databaseDao.getNetworkData()?.let {
                 dataList.addAll(it)

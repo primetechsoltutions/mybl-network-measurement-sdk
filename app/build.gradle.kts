@@ -65,7 +65,7 @@ dependencies {
 
     implementation(project(mapOf("path" to ":network-sdk")))
 //    implementation("com.ptsl:net-monitor:1.0.19")
-//    implementation("com.github.primetechsoltutions:mybl-network-measurement-sdk:Test-1.0.1")
+//    implementation("com.github.primetechsoltutions:mybl-network-measurement-sdk:Test-1.0.2")
 //    implementation("com.github.primetechsoltutions:mybl-network-measurement-sdk:Live-1.0.0")
     implementation("com.google.dagger:hilt-android:2.57.1")
     kapt("com.google.dagger:hilt-android-compiler:2.57.1")

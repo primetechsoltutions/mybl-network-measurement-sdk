@@ -59,7 +59,6 @@ class NetworkDataWorker @AssistedInject constructor(
             databaseDao.getNetworkData()?.let {
                 dataList.addAll(it)
             }
-            throw Exception()
             val response = apiService.postNetworkData(NetworkDataRequest(auth, dataList))
             Log.d("Data Response", "✅ API success: $response")
 

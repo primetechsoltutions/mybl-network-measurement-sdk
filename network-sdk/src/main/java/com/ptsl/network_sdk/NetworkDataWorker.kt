@@ -15,6 +15,7 @@ import androidx.work.WorkerParameters
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.gson.Gson
 import com.ptsl.network_sdk.api.ApiService
 import com.ptsl.network_sdk.data_model.NetworkDataRequest
 import com.ptsl.network_sdk.data_model.entity.AuthEntity
@@ -58,6 +59,7 @@ class NetworkDataWorker @AssistedInject constructor(
             databaseDao.getNetworkData()?.let {
                 dataList.addAll(it)
             }
+            throw Exception()
             val response = apiService.postNetworkData(NetworkDataRequest(auth, dataList))
             Log.d("Data Response", "✅ API success: $response")
 
@@ -93,10 +95,14 @@ class NetworkDataWorker @AssistedInject constructor(
             val auth = getAuth()
 
             // 👇 Serialize request data
+            val gson = Gson()
             val failedRequest = try {
-                NetworkDataRequest(auth, dataList).toString()
+                gson.toJson(NetworkDataRequest(auth, dataList))
             } catch (ex: Exception) {
-                "Failed to serialize request: ${ex.message}"
+                gson.toJson(
+                    mapOf(
+                        "error" to "Failed to serialize request",
+                        "message" to ex.message))
             }
 
             val eventLogModel = EventLogModel(

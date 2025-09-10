@@ -111,8 +111,8 @@ suspend fun ICell.prepareDate(
         is CellCdma -> {
             val speedPair = downloader.getBandWidthSpeed(networkType = "2G",hasMobileInternet= hasMobileInternet,activeNetworkMnc = activeNetworkMnc, currentMnc = mnc)
             return NetworkDataEntity().also {
-                it.time = getCurrentTime(this.timestamp)
-                it.date = getCurrentDate(this.timestamp)
+                it.time = getCurrentTime(System.currentTimeMillis())
+                it.date = getCurrentDate(System.currentTimeMillis())
                 it.mcc = "${removeNullFromString("${mcc}")}"
                 it.mnc = "${removeNullFromString("${mnc}")}"
                 it.type = "CDMA"
@@ -138,8 +138,8 @@ suspend fun ICell.prepareDate(
         is CellGsm -> {
             val speedPair = downloader.getBandWidthSpeed(networkType = "2G",hasMobileInternet= hasMobileInternet,activeNetworkMnc = activeNetworkMnc, currentMnc = mnc)
             return NetworkDataEntity().also {
-                it.time = getCurrentTime(this.timestamp)
-                it.date = getCurrentDate(this.timestamp)
+                it.time = getCurrentTime(System.currentTimeMillis())
+                it.date = getCurrentDate(System.currentTimeMillis())
                 it.mcc = "${removeNullFromString("${mcc}")}"
                 it.mnc = "${removeNullFromString("${mnc}")}"
                 it.lac = removeNullFromString("${this.lac}")
@@ -171,8 +171,8 @@ suspend fun ICell.prepareDate(
         is CellWcdma -> {
             val speedPair = downloader.getBandWidthSpeed(networkType = "3G",hasMobileInternet= hasMobileInternet,activeNetworkMnc = activeNetworkMnc, currentMnc = mnc)
             return NetworkDataEntity().also {
-                it.time = getCurrentTime(this.timestamp)
-                it.date = getCurrentDate(this.timestamp)
+                it.time = getCurrentTime(System.currentTimeMillis())
+                it.date = getCurrentDate(System.currentTimeMillis())
                 it.mcc = "${removeNullFromString("${mcc}")}"
                 it.mnc = "${removeNullFromString("${mnc}")}"
                 it.lac = removeNullFromString("${this.lac}")
@@ -203,8 +203,8 @@ suspend fun ICell.prepareDate(
         is CellLte -> {
             val speedPair = downloader.getBandWidthSpeed(networkType = "4G",hasMobileInternet= hasMobileInternet,activeNetworkMnc = activeNetworkMnc, currentMnc = mnc)
             return NetworkDataEntity().also {
-                it.time = getCurrentTime(this.timestamp)
-                it.date = getCurrentDate(this.timestamp)
+                it.time = getCurrentTime(System.currentTimeMillis())
+                it.date = getCurrentDate(System.currentTimeMillis())
                 it.mcc = "${removeNullFromString("${mcc}")}"
                 it.mnc = "${removeNullFromString("${mnc}")}"
                 it.tac = removeNullFromString("${this.tac}")
@@ -240,8 +240,8 @@ suspend fun ICell.prepareDate(
         is CellNr -> {
             val speedPair = downloader.getBandWidthSpeed(networkType = "4G",hasMobileInternet= hasMobileInternet,activeNetworkMnc = activeNetworkMnc, currentMnc = mnc)
             return NetworkDataEntity().also {
-                it.time = getCurrentTime(this.timestamp)
-                it.date = getCurrentDate(this.timestamp)
+                it.time = getCurrentTime(System.currentTimeMillis())
+                it.date = getCurrentDate(System.currentTimeMillis())
                 it.mcc = "${removeNullFromString("${mcc}")}"
                 it.mnc = "${removeNullFromString("${mnc}")}"
                 it.tac = removeNullFromString("${this.tac}")
@@ -270,8 +270,8 @@ suspend fun ICell.prepareDate(
         is CellTdscdma -> {
             val speedPair = downloader.getBandWidthSpeed(networkType = "3G",hasMobileInternet= hasMobileInternet,activeNetworkMnc = activeNetworkMnc, currentMnc = mnc)
             return NetworkDataEntity().also {
-                it.time = getCurrentTime(this.timestamp)
-                it.date = getCurrentDate(this.timestamp)
+                it.time = getCurrentTime(System.currentTimeMillis())
+                it.date = getCurrentDate(System.currentTimeMillis())
                 it.mcc = "${removeNullFromString("${mcc}")}"
                 it.mnc = "${removeNullFromString("${mnc}")}"
                 it.lac = removeNullFromString("${this.cid}")
@@ -322,11 +322,11 @@ fun ResponseBody?.getTotalBytes(): Int {
 }
 
 private fun getCurrentTime(timestamp: Milliseconds?): String {
-    return "${SimpleDateFormat("yyyy-MM-dd'T'HH:mm:00").format(System.currentTimeMillis())}"
+    return "${SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(System.currentTimeMillis())}"
 }
 
 private fun getCurrentDate(timestamp: Milliseconds?): String {
-    return "${SimpleDateFormat("yyyy-MM-dd'T'HH:mm:00").format(System.currentTimeMillis())}"
+    return "${SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(System.currentTimeMillis())}"
 }
 
 private fun removeNullFromString(str: String): Int {

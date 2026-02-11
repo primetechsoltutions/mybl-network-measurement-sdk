@@ -62,11 +62,14 @@ class NetworkDataUploader @Inject constructor(
     }
 
     fun requestPermission(callback: (Boolean) -> Unit) {
-       if (this::checkPermissionHandler.isInitialized) {
-           if (checkPermissionHandler.isPermissionGranted())
+       if (this::checkPermissionHandler.isInitialized && checkPermissionHandler.isGpsEnabled()) {
+           if (checkPermissionHandler.isPermissionGranted()){
                callback(true)
-           else
+
+           }
+           else {
                checkPermissionHandler.requestPermission(callback = callback)
+           }
        }else{
            callback(false)
        }

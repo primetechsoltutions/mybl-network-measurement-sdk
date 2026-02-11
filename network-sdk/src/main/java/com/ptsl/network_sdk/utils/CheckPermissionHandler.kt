@@ -34,7 +34,7 @@ class CheckPermissionHandler(private val activity: AppCompatActivity) {
                 activity, permission
             ) == PackageManager.PERMISSION_GRANTED
         }
-        return isGpsEnabled() && isAllPermissionsGranted
+        return  isAllPermissionsGranted
     }
 fun requestPermission(callback: (Boolean) -> Unit) {
     this.callback = callback
@@ -132,7 +132,7 @@ fun requestPermission(callback: (Boolean) -> Unit) {
         }
 
 
-    private fun isGpsEnabled(): Boolean {
+     fun isGpsEnabled(): Boolean {
         val locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
